@@ -4,10 +4,6 @@
 (setq input-sequence (-map #'string-to-number (butlast (split-string input "\n"))))
 (setq length-of-sequence-to-consider 5)
 
-; now I need combinations of values...
-; mops team is a news org.  They do not know when the exceptions need to be in...even he is confused.  exception by june 30th or we'll turn it off.
-; Anu's team
-
 (defun add (x y)
   (+ x y))
 

@@ -80,4 +80,15 @@
 (assert (eq (isvalid 2 (list 1 2 2) 2) nil))
 
 
+(isvalid 2 (list 1 2 3) 2)
+
+; assert that checking at an invalid index returns nil
+(assert (eq (find-invalid-sequence 3 (list 1 2 3) 2) nil))
+
+; assert that if all values at/after index are valid then return nil
+(assert (eq (find-invalid-sequence 3 (list 1 2 3) 2) nil))
+
+; assert that the first index is not valid
+(assert (eq (find-invalid-sequence 0 (list 1 2 3) 2) 0))
+
 

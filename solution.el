@@ -52,14 +52,17 @@
      (isvalid-helper number combinations)
   ))
 
-(defun find-invalid-sequence (index)
+(defun find-invalid-sequence (index sequence lookback-size)
   "increment through all indexes until it finds an invalid number or processes all numbers"
   ; return if we run through all values
-  (if (eq index (length input-sequence)) nil
+  (if (>= index (length sequence)) nil
     ; base case, if valid then try the next value
-    (if (isvalid index input-sequence) (find-invalid-sequence (+ 1 index))
-      index)
+    (if (isvalid index sequence lookback-size) (find-invalid-sequence (+ 1 index) sequence lookback-size)
+      (nth index sequence))
   ))
 
-(find-invalid-sequence 0)
+(setq preamble-length 5)
+(assert (eq (find-invalid-sequence preamble-length input-sequence length-of-sequence-to-consider) 127))
 
+(setq preamble-length 25)
+(find-invalid-sequence preamble-length input-sequence length-of-sequence-to-consider)

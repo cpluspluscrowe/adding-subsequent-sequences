@@ -6,11 +6,12 @@
   (+ x y))
 
 (defun sum-number-with-sequence (to-add relevant-sequence)
-  "Return a list of the sequence with each number incremented by to-add"
+  "Return a list where each number in the sequence is incremented by to-add"
 (-map (-partial #'add to-add) relevant-sequence))
 
 (defun generate-sequence-at-index (sequence index)
-  "Create the list of sequence of length length-of-sequence-to-consider before index, which are incremented by the value at index"
+  "Generate a list where each value in sequence is incrmeented by the value at index.\
+   Repeat for all indexes and return the appended list"
 ; base case
   (if (eq (length sequence) index) nil
     (let (
@@ -18,24 +19,37 @@
           )
       ; else return a sequence of the numbers incremented by the value at index
       (append
-       (num-number-with-sequence number (-remove-item number sequence))
+       (sum-number-with-sequence number (-remove-item number sequence))
        (generate-sequence-at-index sequence (+ index 1))
        )
     )
   ))
 
  (defun generate-sequence-combinations (relevant-sequence)
-   (generate-sequence-at-index sequence 0)
+   "Added to make the call to generate-sequence-at-index have one fewer argument"
+   (generate-sequence-at-index relevant-sequence 0)
    )
 
-(defun isvalid(index sequence)
-  "Returns if two different values in the sequence length-of-sequence-to-consider values before in the list add to equal the value at sequence"
+(defun generate-lookback-sequence (sequence index lookback-size)
+  "Splice sequence to only include values before the index of lookback-size"
+  (-slice sequence (- index lookback-size) index)
+  )
+
+(defun isvalid-helper (number combinations)
+  "Easy way to check isvalid, allows user to supply arguments"
+  (-contains? combinations number)
+  )
+
+(defun isvalid(index sequence lookback-size)
+  "Returns if the value at index is valid for its sequence, where valid is true if two different \
+   values in a subsequence, when added, equal the value at index.  \
+   The subsequence is comprised of the previous length-of-sequence-to-consider values in the sequence"
    (let* (
          (number (nth index sequence))
-         (relevant-sequence (-slice sequence (- index length-of-sequence-to-consider) index))
+         (relevant-sequence (generate-lookback-sequence sequence index lookback-size))
          (combinations (generate-sequence-combinations relevant-sequence))
          )
-     (-contains? number combinations)
+     (isvalid-helper number combinations)
   ))
 
 (defun find-invalid-sequence (index)

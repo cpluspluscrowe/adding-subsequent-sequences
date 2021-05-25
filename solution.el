@@ -65,4 +65,7 @@
 (assert (eq (find-invalid-sequence preamble-length input-sequence length-of-sequence-to-consider) 127))
 
 (setq preamble-length 25)
+(setq length-of-sequence-to-consider 25)
+(setq max-specpdl-size 10000)
+(setq max-lisp-eval-depth 2000)
 (find-invalid-sequence preamble-length input-sequence length-of-sequence-to-consider)
